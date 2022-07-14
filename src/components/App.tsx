@@ -1,9 +1,23 @@
-import "cubing/twisty";
+import { useEffect, useRef } from "react";
+import Twisty from "../twisty";
 
 function App() {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return <twisty-player alg="([R, U])6"></twisty-player>;
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      const twisty = new Twisty();
+      ref.current.appendChild(twisty.player);
+      return () => {
+        ref.current?.removeChild(twisty.player);
+      };
+    }
+    return () => {
+      return;
+    };
+  }, []);
+
+  return <div ref={ref} />;
 }
 
 export default App;
